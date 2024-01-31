@@ -1,0 +1,41 @@
+template:
+  # Australian Ausgrid NSW Peak-shoulder-offpeak sensor defined
+  # https://www.ausgrid.com.au/Your-energy-use/Meters/Time-of-use-pricing
+  # Peak: 2pm - 8pm on working weekdays 1 November - 31 March;
+  # Peak: 5pm - 9pm on working weekdays 1 June - 31 August
+  # Off-peak: 10pm - 7am
+  # Shoulder: all other times
+  - sensor:
+      name: TOU Period
+      icon: mdi:clock-time-three-outline
+      state: >
+        {% set tou_period = 'shoulder' %}
+        {% set n_month = now().month %}
+        {% set n_hour = now().hour %}
+        {% set is_summer = (n_month <= 3 or n_month >= 11) %}
+        {% set is_winter = (6 <= n_month <= 8 ) %}
+        {% if n_hour >= 11 or n_hour < 2 %}
+          {% set tou_period = 'super-offpeak' %}
+        {% elif n_hour >= 22 or n_hour < 7 %}
+          {% set tou_period = 'offpeak' %}
+        {% elif ((is_summer and (14 <= n_hour <= 19))
+            or (is_winter and (17 <= n_hour <= 20)))
+            and (is_state("binary_sensor.workday_sensor", "on")) %}
+          {% set tou_period = 'peak' %}
+        {% endif %}
+        {{tou_period}}
+
+  - sensor:
+      name: Electricity Cost
+      icon: mdi:currency-usd
+      unit_of_measurement: AUD/kWh
+      state: >
+        {% if is_state('sensor.tou_period', 'super-offpeak') %}
+          {{ 0 }}
+        {% elif is_state('sensor.tou_period', 'peak') %}
+          {{ 0.6072 }}
+        {% elif is_state('sensor.tou_period', 'offpeak') %}
+          {{ 0.2860 }}
+        {% else %}
+          {{ 0.31405 }}
+        {% endif %}
