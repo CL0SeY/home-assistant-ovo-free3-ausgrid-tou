@@ -1,7 +1,9 @@
 template:
   # Australian Ausgrid NSW Peak-shoulder-offpeak sensor defined
-  # https://www.ausgrid.com.au/Your-energy-use/Meters/Time-of-use-pricing
-  # Peak: 2pm - 8pm on working weekdays 1 November - 31 March;
+  # https://www.ovoenergy.com.au/pricing/ 
+  # Super Off-peak (The Free 3 Plan (TOU)): 11am - 2pm every day
+  # https://www.ausgrid.com.au/Your-energy-use/Meters/Time-of-use-pricing 
+  # Peak: 2pm - 8pm on working weekdays 1 November - 31 March
   # Peak: 5pm - 9pm on working weekdays 1 June - 31 August
   # Off-peak: 10pm - 7am
   # Shoulder: all other times
