@@ -16,7 +16,7 @@ template:
         {% set n_hour = now().hour %}
         {% set is_summer = (n_month <= 3 or n_month >= 11) %}
         {% set is_winter = (6 <= n_month <= 8 ) %}
-        {% if n_hour >= 11 or n_hour < 2 %}
+        {% if n_hour >= 11 and n_hour <= 13 %}
           {% set tou_period = 'super-offpeak' %}
         {% elif n_hour >= 22 or n_hour < 7 %}
           {% set tou_period = 'offpeak' %}
